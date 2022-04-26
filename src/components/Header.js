@@ -11,12 +11,12 @@ export default function Header() {
               Home
             </Button>
           </Link>
-          <Link href="/" passHref>
+          <Link href="/cards" passHref>
             <Button component="a" sx={{ color: "white" }}>
               Cards
             </Button>
           </Link>
-          <Link href="/" passHref>
+          <Link href="/create" passHref>
             <Button component="a" sx={{ color: "white" }}>
               Create
             </Button>
