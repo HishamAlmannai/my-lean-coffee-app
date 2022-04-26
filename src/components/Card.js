@@ -63,7 +63,7 @@ function CardEditMode({ name, content, id, onDisableEditMode }) {
           row={2}
           value={contentValue}
           onChange={(event) => {
-            setContentValue(event.targe.value);
+            setContentValue(event.target.value);
           }}
         />
         <TextField
@@ -72,7 +72,7 @@ function CardEditMode({ name, content, id, onDisableEditMode }) {
           fullWidth
           value={nameValue}
           onChange={(event) => {
-            setNameValue(event.targe.value);
+            setNameValue(event.target.value);
           }}
         />
       </CardContent>
