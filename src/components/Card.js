@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { useSWRConfig } from "swr";
 
 export default function Card(props) {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -30,7 +31,7 @@ export default function Card(props) {
   );
 }
 
-function CardShowMode({ name, content, onEnableEditMode }) {
+function CardShowMode({ id, name, content, onEnableEditMode }) {
   return (
     <>
       <CardContent>
@@ -38,7 +39,17 @@ function CardShowMode({ name, content, onEnableEditMode }) {
         <Typography>{name}</Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Delete</Button>
+        <Button
+          size="small"
+          onClick={async () => {
+            const response = await fetch("/api/card/" + id, {
+              method: "DELETE",
+            });
+            console.log(await response.json());
+          }}
+        >
+          Delete
+        </Button>
         <Button size="small" onClick={onEnableEditMode}>
           Edit
         </Button>
@@ -50,17 +61,34 @@ function CardShowMode({ name, content, onEnableEditMode }) {
 function CardEditMode({ name, content, id, onDisableEditMode }) {
   const [nameValue, setNameValue] = useState(name);
   const [contentValue, setContentValue] = useState(content);
+  const { mutate } = useSWRConfig();
 
-  function submit() {}
+  async function onFormSubmit(event) {
+    event.preventDefault();
+
+    console.log(id, nameValue, contentValue);
+
+    const response = await fetch("/api/card/" + id, {
+      method: "PUT",
+      body: JSON.stringify({
+        content: contentValue,
+        name: nameValue,
+      }),
+    });
+
+    console.log(await response.json());
+    mutate("/api/cards");
+    onDisableEditMode();
+  }
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={onFormSubmit}>
       <CardContent>
         <TextField
           name="content"
           label="content"
-          fullWidthmultiline
-          row={2}
+          fullWidth
+          rows={2}
           value={contentValue}
           onChange={(event) => {
             setContentValue(event.target.value);
@@ -70,6 +98,7 @@ function CardEditMode({ name, content, id, onDisableEditMode }) {
           name="name"
           label="name"
           fullWidth
+          sx={{ marginTop: 1.5 }}
           value={nameValue}
           onChange={(event) => {
             setNameValue(event.target.value);
@@ -77,12 +106,7 @@ function CardEditMode({ name, content, id, onDisableEditMode }) {
         />
       </CardContent>
       <CardActions>
-        <Button
-          size="small"
-          onClick={() => {
-            onDisableEditMode();
-          }}
-        >
+        <Button type="submit" size="small">
           Save
         </Button>
       </CardActions>
