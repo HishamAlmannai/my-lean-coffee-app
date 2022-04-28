@@ -1,16 +1,18 @@
 import { Button, Grid, TextField } from "@mui/material";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function CardCreateForm() {
   const [nameValue, setNameValue] = useState("");
   const [contentValue, setContentValue] = useState("");
+  const router = useRouter();
 
   const submit = async (event) => {
     event.preventDefault();
     const contentValue = event.target.elements.content.value;
     const nameValue = event.target.elements.name.value;
 
-    const response = await fetch("/api/card/create/", {
+    const response = await fetch("/api/card/create", {
       method: "POST",
       body: JSON.stringify({
         content: contentValue,
@@ -18,6 +20,7 @@ export default function CardCreateForm() {
       }),
     });
     console.log(await response.json());
+    router.push("/cards");
   };
   return (
     <>
