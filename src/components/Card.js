@@ -32,6 +32,7 @@ export default function Card(props) {
 }
 
 function CardShowMode({ id, name, content, onEnableEditMode }) {
+  const { mutate } = useSWRConfig();
   return (
     <>
       <CardContent>
@@ -46,6 +47,7 @@ function CardShowMode({ id, name, content, onEnableEditMode }) {
               method: "DELETE",
             });
             console.log(await response.json());
+            mutate("/api/cards");
           }}
         >
           Delete
