@@ -1,9 +1,12 @@
 import Card from "../../../src/models/Card";
+import { getCards } from "../../../src/services/get-cards";
 
 export default async function handler(request, response) {
   const { id } = request.query;
-  /* const cards = getCards();
-  const singleCard = cards.find((card) => card.id === id); */
+
+  /*   const cards = getCards();
+  const singleCard = cards.find((card) => card.id === id); 
+   */
 
   if (request.method === "DELETE") {
     const deletedCard = await Card.findByIdAndDelete(id);
