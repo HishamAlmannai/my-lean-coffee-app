@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { useSWRConfig } from "swr";
+import { mutate, useSWRConfig } from "swr";
 
 export default function Card(props) {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -32,7 +32,7 @@ export default function Card(props) {
 }
 
 function CardShowMode({ id, name, content, onEnableEditMode }) {
-  const { mutate } = useSWRConfig();
+  //const { mutate } = useSWRConfig();
   return (
     <>
       <CardContent>
@@ -46,7 +46,7 @@ function CardShowMode({ id, name, content, onEnableEditMode }) {
             const response = await fetch("/api/card/" + id, {
               method: "DELETE",
             });
-            console.log(await response.json());
+            //console.log(await response.json());
             mutate("/api/cards");
           }}
         >
@@ -63,7 +63,7 @@ function CardShowMode({ id, name, content, onEnableEditMode }) {
 function CardEditMode({ name, content, id, onDisableEditMode }) {
   const [nameValue, setNameValue] = useState(name);
   const [contentValue, setContentValue] = useState(content);
-  const { mutate } = useSWRConfig();
+  //const { mutate } = useSWRConfig();
 
   async function onFormSubmit(event) {
     event.preventDefault();
